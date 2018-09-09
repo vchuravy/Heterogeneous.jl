@@ -1,0 +1,15 @@
+name = "Heterogeneous"
+uuid = "19a2ba5a-b3dc-11e8-3dc7-5139e068fcc2"
+authors = ["Valentin Churavy <v.churavy@gmail.com>"]
+
+[deps]
+CUDAnative = "be33ccc6-a3ff-5ff2-a52e-74243cff1e17"
+CuArrays = "3a865a2d-5b23-5a0f-bc46-62713ec82fae"
+Distributed = "8ba89e20-285c-5b6f-9357-94700520ee1b"
+DistributedArrays = "aaf54ef3-cdf8-58ed-94cc-d582ad619b94"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
