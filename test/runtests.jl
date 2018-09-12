@@ -16,6 +16,7 @@ if Base.JLOptions().check_bounds == 1
 end
 
 using CUDAnative
+using Test
 
 if CUDAnative.configured
     include("examples.jl")
