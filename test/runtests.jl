@@ -19,11 +19,23 @@ if Base.JLOptions().check_bounds == 1
     exit()
 end
 
-using CUDAnative
-using Test
+# Setup environment
+using Pkg
 
-if CUDAnative.configured
-    include("examples.jl")
-else
-    @warn("CUDAnative.jl has not been configured; skipping on-device tests.")
+branch = haskey(ENV, "GITLAB_CI") ? ENV["CI_COMMIT_REF_NAME"] : nothing
+for package in ("GPUArrays", "CuArrays", "DistributedArrays")
+    try
+        if branch === nothing
+            branch = chomp(read(`git -C $(@__DIR__) rev-parse --abbrev-ref HEAD`, String))
+            branch == "HEAD" && error("in detached HEAD state")
+        end
+        Pkg.add(PackageSpec(name=package, rev=String(branch)))
+        @info "Installed $package from $branch branch"
+    catch ex
+        @warn "Could not install $package from same branch, trying master branch" exception=ex
+        Pkg.add(PackageSpec(name=package, rev="master"))
+    end
 end
+
+using Test
+include("examples.jl")
